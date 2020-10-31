@@ -1,0 +1,9 @@
+connection:
+  mysql:
+    enabled: false
+    address: "localhost:3306"
+    username: "root"
+    passowrd: ""
+    database: "test"
+  sqlite:
+    file: "questions.db"

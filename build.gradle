@@ -1,6 +1,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'java'
+apply plugin: 'me.bristermitten.pdm'
 
 group = 'me.gabriel'
 version = '1.0.0'
@@ -8,20 +9,59 @@ version = '1.0.0'
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
+jar.dependsOn project.tasks.getByName('pdm')
+
 repositories {
     mavenCentral()
-    maven {name = 'papermc-repo'
-url = 'https://papermc.io/repo/repository/maven-public/'
+
+    maven { url = 'https://papermc.io/repo/repository/maven-public/' }
+    maven { url = 'https://oss.sonatype.org/content/groups/public/' }
+
+    maven { url = 'https://jitpack.io/' }
 }
-maven {name = 'sonatype'
-url = 'https://oss.sonatype.org/content/groups/public/'
-} }
 
 dependencies {
-compileOnly 'com.destroystokyo.paper:paper-api:1.12-R0.1-SNAPSHOT' }
+    compileOnly 'com.destroystokyo.paper:paper-api:1.12-R0.1-SNAPSHOT'
+
+    pdm 'com.github.HenryFabio:inventory-api:2b163967d1'
+    pdm 'com.zaxxer:HikariCP:3.4.5'
+    pdm 'com.github.SaiintBrisson:command-framework:1.0.0'
+    pdm 'com.google.inject:guice:4.0'
+    pdm 'javax.inject:javax.inject:1'
+    pdm 'javax.inject:javax.inject-tck:1'
+    pdm 'aopalliance:aopalliance:1.0'
+    pdm 'com.google.guava:guava:27.1-jre'
+    pdm 'com.google.guava:guava-testlib:27.1-jre'
+    pdm 'org.ow2.asm:asm:8.0.1'
+
+    def lombokDependency = 'org.projectlombok:lombok:1.18.12'
+    compileOnly lombokDependency
+    annotationProcessor lombokDependency
+
+}
+
+buildscript {
+
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+
+    dependencies {
+        classpath 'me.bristermitten:pdm-gradle:0.0.28'
+    }
+
+}
+
+jar {
+    archiveName("${project.name}.jar")
+}
 
 processResources {
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
