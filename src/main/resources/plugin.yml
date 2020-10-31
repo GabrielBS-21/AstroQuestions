@@ -1,0 +1,6 @@
+name: AstroQuestions
+version: @version@
+main: me.gabriel.astroquestions.AstroQuestions
+prefix: AstroQuestions
+authors: [GabrielBS]
+description: Plugin de perguntas e respostas.
