@@ -32,10 +32,20 @@ public class QuestionManager {
 
     }
 
-    public void quote(Question question){
+    public void quote(Question question, String staff, String quote, long quotedAt){
+        plugin.getQuestionDataAccess().updateQuestion(question, staff, quote, quotedAt);
+    }
 
+    public void editQuestion(Question question, String newQuestionValue){
 
+        plugin.getQuestionDataAccess().update("UPDATE `astro_questions` SET `question` = ? WHERE ID = ?",
+                newQuestionValue,
+                question.getId());
 
+    }
+
+    public void removeQuestion(Question question){
+        plugin.getQuestionDataAccess().deleteQuestion(question);
     }
 
     public List<Question> questionList(){
