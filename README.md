@@ -44,27 +44,27 @@ question:
     lore-replied: # linhas que serão adicionadas caso a pergunta tenha sido respondida  
       - ''  
       - '&7Respondida por: &f@staff'  
-	  - '&7Respondida em: &f@repliedAt'  
-	  - '&7Resposta: &f@reply'  
-	  - ''  
+      - '&7Respondida em: &f@repliedAt'  
+      - '&7Resposta: &f@reply'  
+      - ''  
   staff-inventory:  
     title: 'Lista de Dúvidas'  
     lines: 6  
-	item:  
+      item:  
       name: '&aDúvida de @player'  
       material: PAPER  
-	  data: 0  
-	  lore:  
-	    - ''  
-	    - '&7Dúvida: &f@question'  
-	    - '&7Criada em: &f@createdAt'  
-	    - '&7Situação: &f@situation'  
+        data: 0  
+        lore:  
+          - ''  
+          - '&7Dúvida: &f@question'  
+          - '&7Criada em: &f@createdAt'  
+          - '&7Situação: &f@situation'  
       lore-replied:  
-	    - ''  
-	    - '&7Respondida por: &f@staff'  
-	    - '&7Respondida em: &f@repliedAt'  
-	    - '&7Resposta: &f@reply'  
-	    - ''  
+            - ''  
+            - '&7Respondida por: &f@staff'  
+            - '&7Respondida em: &f@repliedAt'  
+            - '&7Resposta: &f@reply'  
+            - ''  
   new-question: # Mensagem que será enviada para todos os jogadores que tiverem permissão (astroquestions.staff)  
     - ''  
     - '&aUm nova dúvida está disponível para ser respondida!'  
