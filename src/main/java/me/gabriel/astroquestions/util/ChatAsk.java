@@ -2,38 +2,40 @@ package me.gabriel.astroquestions.util;
 
 import me.gabriel.astroquestions.AstroQuestions;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.Arrays;
 import java.util.WeakHashMap;
 import java.util.function.BiConsumer;
 
-public class ChatAsker {
+public class ChatAsk {
 
-    private final static WeakHashMap<Player, ChatAsker> askers = new WeakHashMap<>();
+    private final static WeakHashMap<Player, ChatAsk> questioneds = new WeakHashMap<>();
 
     static {
         AstroQuestions plugin = AstroQuestions.getInstance();
         Bukkit.getPluginManager().registerEvents(new Listener() {
             @EventHandler
-            public void onChat(AsyncPlayerChatEvent e) {
-                ChatAsker asker = askers.get(e.getPlayer());
-                if (asker != null) {
-                    e.setCancelled(true);
-                    BiConsumer<Player, String> consumer = asker.getOnComplete();
-                    String message = e.getMessage();
-                    Player player = e.getPlayer();
-                    askers.remove(player);
+            public void onChat(AsyncPlayerChatEvent event) {
+                ChatAsk questioned = questioneds.get(event.getPlayer());
+                if (questioned != null) {
+                    event.setCancelled(true);
+                    BiConsumer<Player, String> consumer = questioned.getOnComplete();
+                    String message = event.getMessage();
+                    Player player = event.getPlayer();
+                    questioneds.remove(player);
                     consumer.accept(player, message);
                 }
             }
 
             @EventHandler
             public void onQuit(PlayerQuitEvent e) {
-                askers.remove(e.getPlayer());
+                questioneds.remove(e.getPlayer());
             }
         }, plugin);
     }
@@ -41,14 +43,17 @@ public class ChatAsker {
     private final String[] messages;
     private final BiConsumer<Player, String> onComplete;
 
-    private ChatAsker(Builder builder) {
+    private ChatAsk(Builder builder) {
         messages = builder.messages;
         onComplete = builder.onComplete;
     }
 
     public void addPlayer(Player player) {
-        askers.put(player, this);
-        player.sendMessage(messages);
+        questioneds.put(player, this);
+
+        for (String message : messages) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+        }
     }
 
     public BiConsumer<Player, String> getOnComplete() {
@@ -81,8 +86,8 @@ public class ChatAsker {
             return this;
         }
 
-        public ChatAsker build() {
-            return new ChatAsker(this);
+        public ChatAsk build() {
+            return new ChatAsk(this);
         }
     }
 

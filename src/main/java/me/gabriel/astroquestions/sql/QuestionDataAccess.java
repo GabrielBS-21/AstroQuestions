@@ -38,10 +38,17 @@ public final class QuestionDataAccess extends DatabaseProvider {
         return question;
     }
 
+    public void updateQuestion(Question question, String staff, String quote, long quotedAt) {
+        update("update `astro_questions` set `staff` = ?, `quote` = ?, `quotedAt` = ? where `id` = ?",
+                staff,
+                quote,
+                quotedAt,
+                question.getId());
+    }
+
     public void deleteQuestion(Question question) {
-        update("delete from `astro_questions` where `player` = ? and `question` = ?",
-                question.getPlayer(),
-                question.getQuestion());
+        update("delete from `astro_questions` where `id` = ?",
+                question.getId());
     }
 
 }
