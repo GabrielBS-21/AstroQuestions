@@ -5,9 +5,11 @@ import me.gabriel.astroquestions.configuration.ConfigurationValue;
 import me.gabriel.astroquestions.inventory.QuestionListInventory;
 import me.gabriel.astroquestions.inventory.QuestionListStaffInventory;
 import me.gabriel.astroquestions.manager.QuestionManager;
+import me.gabriel.astroquestions.util.TextUtil;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.command.Context;
 import me.saiintbrisson.minecraft.command.target.CommandTarget;
+import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -38,6 +40,8 @@ public class QuestionCommand {
 
         questionManager.createQuestion(player, questionValue);
 
+        player.sendMessage(ConfigurationValue.get(ConfigurationValue::QUESTION_SENT));
+
         List<String> newQuestionMessage = ConfigurationValue.get(ConfigurationValue::NEW_QUESTION);
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -46,7 +50,10 @@ public class QuestionCommand {
 
                 for (String message : newQuestionMessage) {
 
-                    onlinePlayer.sendMessage(message);
+                    TextUtil jsonMessage = new TextUtil(message);
+                    jsonMessage.clickEvent(ClickEvent.Action.RUN_COMMAND, "/duvidas");
+
+                    onlinePlayer.spigot().sendMessage(jsonMessage);
 
                 }
 

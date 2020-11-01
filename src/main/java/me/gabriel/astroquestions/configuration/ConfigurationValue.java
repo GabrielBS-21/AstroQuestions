@@ -24,6 +24,7 @@ public class ConfigurationValue {
     private final String ALREADY_REPLIED = translateMessage("messages.already-replied");
     private final String REPLY_SENT = translateMessage("messages.reply-sent");
     private final String TEXT_EDITED = translateMessage("messages.text-edited");
+    private final String QUESTION_SENT = translateMessage("messages.question-sent");
 
     private final List<String> NEW_QUESTION = translateMessageList("question.new-question");
     private final List<String> QUESTION_REPLIED = translateMessageList("question.question-replied");

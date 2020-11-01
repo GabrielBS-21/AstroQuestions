@@ -38,7 +38,7 @@ public final class QuestionDataAccess extends DatabaseProvider {
         return question;
     }
 
-    public void updateQuestion(Question question, String staff, String quote, long quotedAt){
+    public void updateQuestion(Question question, String staff, String quote, long quotedAt) {
         update("update `astro_questions` set `staff` = ?, `quote` = ?, `quotedAt` = ? where `id` = ?",
                 staff,
                 quote,

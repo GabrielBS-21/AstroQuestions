@@ -12,7 +12,6 @@ import me.gabriel.astroquestions.model.Question;
 import me.gabriel.astroquestions.util.ChatAsk;
 import me.gabriel.astroquestions.util.ItemBuilder;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 
@@ -69,10 +68,12 @@ public class QuestionListStaffInventory extends PagedInventory {
                     InventoryConfiguration.get(InventoryConfiguration::LORE)
             );
 
-            ItemBuilder questionItem = new ItemBuilder(Material.PAPER)
-                    .name("§aDúvida de " + question.getPlayer())
+            ItemBuilder questionItem = new ItemBuilder(InventoryConfiguration.get(InventoryConfiguration::STAFF_ITEM_MATERIAL))
+                    .name(InventoryConfiguration.get(InventoryConfiguration::STAFF_ITEM_NAME)
+                            .replace("@player", question.getPlayer())
+                            .replace("@id", String.valueOf(question.getId())))
+                    .durability(InventoryConfiguration.get(InventoryConfiguration::STAFF_ITEM_DATA))
                     .flag(ItemFlag.values());
-
 
             long quotedAt = question.getQuotedAt();
 
@@ -131,9 +132,10 @@ public class QuestionListStaffInventory extends PagedInventory {
 
                                                 if (message.equalsIgnoreCase("cancelar")) {
                                                     asked.sendMessage("§aOperação cancelada com sucesso.");
+                                                    return;
                                                 }
 
-                                                questionManager.quote(question, asked.getName(), message, System.currentTimeMillis());
+                                                Question quotedQuestion = questionManager.quote(question, asked.getName(), message, System.currentTimeMillis());
 
                                                 asked.sendMessage(ConfigurationValue.get(ConfigurationValue::REPLY_SENT));
 
@@ -143,7 +145,8 @@ public class QuestionListStaffInventory extends PagedInventory {
 
                                                     questionPlayer.sendMessage(replyMessage
                                                             .replace("@id", String.valueOf(question.getId()))
-                                                            .replace("@reply", question.getQuote())
+                                                            .replace("@reply", quotedQuestion.getQuote())
+                                                            .replace("@staff", quotedQuestion.getStaff())
                                                     );
 
                                                 }

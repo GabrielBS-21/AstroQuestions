@@ -14,7 +14,6 @@ import me.gabriel.astroquestions.configuration.ConfigurationValue;
 import me.gabriel.astroquestions.sql.QuestionDataAccess;
 import me.gabriel.astroquestions.sql.connection.SQLConnection;
 import me.gabriel.astroquestions.sql.connection.mysql.MySQLConnection;
-import me.gabriel.astroquestions.sql.connection.sqlite.SQLiteConnection;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
 import me.saiintbrisson.minecraft.command.message.MessageHolder;
 import me.saiintbrisson.minecraft.command.message.MessageType;
@@ -113,9 +112,9 @@ public final class AstroQuestions extends JavaPlugin {
         getLogger().info("Informações salvas.");
         getLogger().info("Plugin descarregado com sucesso.");
 
-        try{
+        try {
             this.sqlConnection.findConnection().close();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             getLogger().warning("Não foi possível fechar a conexão com o banco de dados.");
         }
@@ -125,10 +124,7 @@ public final class AstroQuestions extends JavaPlugin {
     private void configureSQLConnection() {
         ConfigurationSection connectionSection = getConfig().getConfigurationSection("connection");
         this.sqlConnection = new MySQLConnection();
-        if (!sqlConnection.configure(connectionSection.getConfigurationSection("mysql"))) {
-            this.sqlConnection = new SQLiteConnection();
-            this.sqlConnection.configure(connectionSection.getConfigurationSection("sqlite"));
-        }
+        sqlConnection.configure(connectionSection.getConfigurationSection("mysql"));
     }
 
 }

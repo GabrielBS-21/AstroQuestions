@@ -7,36 +7,36 @@ import me.gabriel.astroquestions.model.Question;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Singleton
 public class QuestionManager {
 
     @Inject private AstroQuestions plugin;
 
-    public Question createQuestion(Player player, String questionValue) {
+    public void createQuestion(Player player, String questionValue) {
 
         try {
-
-            return CompletableFuture.supplyAsync(() ->
-                    plugin.getQuestionDataAccess().insertQuestion(Question.builder()
-                        .player(player.getName())
-                        .question(questionValue)
-                        .createdAt(System.currentTimeMillis())
-                        .build())).get();
+            plugin.getQuestionDataAccess().insertQuestion(Question.builder()
+                    .player(player.getName())
+                    .question(questionValue)
+                    .createdAt(System.currentTimeMillis())
+                    .build());
 
         } catch (Throwable t) {
             t.printStackTrace();
-            return null;
         }
 
     }
 
-    public void quote(Question question, String staff, String quote, long quotedAt){
+    public Question quote(Question question, String staff, String quote, long quotedAt) {
         plugin.getQuestionDataAccess().updateQuestion(question, staff, quote, quotedAt);
+        question.setStaff(staff);
+        question.setQuote(quote);
+        question.setQuotedAt(quotedAt);
+        return question;
     }
 
-    public void editQuestion(Question question, String newQuestionValue){
+    public void editQuestion(Question question, String newQuestionValue) {
 
         plugin.getQuestionDataAccess().update("UPDATE `astro_questions` SET `question` = ? WHERE ID = ?",
                 newQuestionValue,
@@ -44,15 +44,15 @@ public class QuestionManager {
 
     }
 
-    public void removeQuestion(Question question){
+    public void removeQuestion(Question question) {
         plugin.getQuestionDataAccess().deleteQuestion(question);
     }
 
-    public List<Question> questionList(){
+    public List<Question> questionList() {
         return plugin.getQuestionDataAccess().findAllQuestions();
     }
 
-    public boolean isQuoted(Question question){
+    public boolean isQuoted(Question question) {
         return !question.getQuote().equals("null");
     }
 

@@ -11,7 +11,6 @@ import me.gabriel.astroquestions.manager.QuestionManager;
 import me.gabriel.astroquestions.model.Question;
 import me.gabriel.astroquestions.util.ChatAsk;
 import me.gabriel.astroquestions.util.ItemBuilder;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemFlag;
@@ -70,10 +69,11 @@ public class QuestionListInventory extends PagedInventory {
                     InventoryConfiguration.get(InventoryConfiguration::LORE)
             );
 
-            ItemBuilder questionItem = new ItemBuilder(Material.PAPER)
-                    .name("§7ID: §f#" + question.getId())
+            ItemBuilder questionItem = new ItemBuilder(InventoryConfiguration.get(InventoryConfiguration::ITEM_MATERIAL))
+                    .name(InventoryConfiguration.get(InventoryConfiguration::ITEM_NAME)
+                            .replace("@id", String.valueOf(question.getId())))
+                    .durability(InventoryConfiguration.get(InventoryConfiguration::ITEM_DATA))
                     .flag(ItemFlag.values());
-
 
             long quotedAt = question.getQuotedAt();
 
@@ -86,15 +86,14 @@ public class QuestionListInventory extends PagedInventory {
 
                 lore.addAll(InventoryConfiguration.get(InventoryConfiguration::STAFF_LORE_REPLIED));
                 lore.add("");
-                lore.add("§aRemover pergunta. §7(Clique direito)");
 
             } else {
 
                 lore.add("");
                 lore.add("§aEditar pergunta. §7(Clique esquerdo)");
-                lore.add("§aRemover pergunta. §7(Clique direito)");
 
             }
+            lore.add("§aRemover pergunta. §7(Clique direito)");
 
             String replied = questionManager.isQuoted(question) ? "Respondida." : "Não respondida.";
 
@@ -108,7 +107,7 @@ public class QuestionListInventory extends PagedInventory {
                             .replace("@reply", question.getQuote()))
                     .collect(Collectors.toList());
 
-            questionItem.lore(lore);
+            questionItem.lore(replacedLore);
 
             InventoryItem inventoryItem = new InventoryItem(questionItem.build())
                     .addCallback(
@@ -132,6 +131,7 @@ public class QuestionListInventory extends PagedInventory {
 
                                                 if (message.equalsIgnoreCase("cancelar")) {
                                                     asked.sendMessage("§aOperação cancelada com sucesso.");
+                                                    return;
                                                 }
 
                                                 questionManager.editQuestion(question, message);
@@ -174,6 +174,7 @@ public class QuestionListInventory extends PagedInventory {
                                                     message.equalsIgnoreCase("nao") ||
                                                     message.equalsIgnoreCase("cancelar")) {
                                                 asked.sendMessage("§aOperação cancelada com sucesso.");
+                                                return;
                                             }
 
                                             questionManager.removeQuestion(question);
