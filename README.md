@@ -94,12 +94,12 @@ O plugin não precisa de nenhum outro plugin como dependência, apenas de alguma
 
 ## Tecnologias usadas
 
-[HikariCP](https://github.com/brettwooldridge/HikariCP) - Um gerenciador de alta performance para conexões JDBC pool.
+- [HikariCP](https://github.com/brettwooldridge/HikariCP) - Um gerenciador de alta performance para conexões JDBC pool.
 
-[Google Guice](https://github.com/google/guice) - Fornece suporte para injeção de dependência usando anotações.
+- [Google Guice](https://github.com/google/guice) - Fornece suporte para injeção de dependência usando anotações.
 
 **APIs e Frameworks**
 
-[command-framework](https://github.com/SaiintBrisson/command-framework) - Framework que facilita a criação de comandos.
+- [command-framework](https://github.com/SaiintBrisson/command-framework) - Framework que facilita a criação de comandos.
 
-[inventory-api](https://github.com/HenryFabio/inventory-api) - API que facilita a criação e o gerenciamento de inventários.
+- [inventory-api](https://github.com/HenryFabio/inventory-api) - API que facilita a criação e o gerenciamento de inventários.
