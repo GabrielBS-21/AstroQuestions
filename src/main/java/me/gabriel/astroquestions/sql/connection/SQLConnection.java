@@ -6,7 +6,7 @@ import java.sql.Connection;
 
 public interface SQLConnection {
 
-    boolean configure(ConfigurationSection section);
+    void configure(ConfigurationSection section);
 
     Connection findConnection();
 

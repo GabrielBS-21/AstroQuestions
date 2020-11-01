@@ -4,17 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-@Builder
+
 @Data
+@Builder
 @AllArgsConstructor
 public class Question {
 
-    private final int id;
-    private final String player;
-    private final String question;
-    private final long createdAt;
-    private final String staff;
-    private final String quote;
-    private final long quotedAt;
+    private int id;
+    private String player;
+    private String question;
+    private long createdAt;
+    private String staff;
+    private String quote;
+    private long quotedAt;
 
 }
